@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { BlueTile__factory } from '../typechain-types';
 import { BlueTile } from '../typechain-types/contracts/BlueTile';
+import { tilesToNFT } from './bluetile-mapper';
 
 // import BlueTileContractJson from "../artifacts/contracts/BlueTile.sol/BlueTile.json";
 
@@ -18,11 +19,22 @@ export class BlueTileContract {
     );
   }
 
-  async exists(id: string): Promise<boolean> {
+  async exists(tiles: number[]): Promise<boolean> {
+    const id = tilesToNFT(tiles);
+    return await this.idExists(id);
+  }
+
+  async idExists(id: string): Promise<boolean> {
     return await this.contract.exists(id);
   }
 
-  async mint(
+  async mint(to: string, tiles: number[], quantity: number): Promise<string> {
+    const id = tilesToNFT(tiles);
+    await this.mintId(to, id, quantity);
+    return id;
+  }
+
+  async mintId(
     to: string,
     id: string,
     quantity: number

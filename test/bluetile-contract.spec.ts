@@ -32,14 +32,14 @@ describe('BlueTile', function () {
     it('tile doesnt exist', async () => {
       const [, minter] = await ethers.getSigners();
       const blueTileContract = new BlueTileContract(blueTile.address, minter);
-      const result = await blueTileContract.exists('0x01');
+      const result = await blueTileContract.idExists('0x01');
       expect(result).to.equal(false);
     });
     it('should mint new tile', async () => {
       const [owner, minter] = await ethers.getSigners();
       const blueTileContract = new BlueTileContract(blueTile.address, owner);
-      await blueTileContract.mint(minter.address, '0x01', 100);
-      const result = await blueTileContract.exists('0x01');
+      await blueTileContract.mintId(minter.address, '0x01', 100);
+      const result = await blueTileContract.idExists('0x01');
       expect(result).to.equal(true);
     });
     it('cant mint same tile again', async () => {
@@ -47,8 +47,23 @@ describe('BlueTile', function () {
       const blueTileContract = new BlueTileContract(blueTile.address, owner);
       //eslint-disable-next-line @typescript-eslint/no-unsafe-call
       await expect(
-        blueTileContract.mint(minter.address, '0x01', 100)
+        blueTileContract.mintId(minter.address, '0x01', 100)
       ).to.be.revertedWith('BlueTileProject: tile already minted');
+    });
+    it('should mint by tile array', async () => {
+      const [owner, minter] = await ethers.getSigners();
+      const tiles = [
+        9, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
+        0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1,
+        1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+        1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
+      ];
+      const blueTileContract = new BlueTileContract(blueTile.address, owner);
+      await blueTileContract.mint(minter.address, tiles, 100);
+      const result = await blueTileContract.idExists(
+        '0x4d6784905ce917a8811bbc752a4f2089c43afc9b2cdd5c1be4d4a25cc7873178'
+      );
+      expect(result).to.equal(true);
     });
     it('can transfer', async () => {
       const [, minter, friend] = await ethers.getSigners();
@@ -75,7 +90,7 @@ describe('BlueTile', function () {
       const blueTileContract = new BlueTileContract(blueTile.address, minter);
       //eslint-disable-next-line @typescript-eslint/no-unsafe-call
       await expect(
-        blueTileContract.mint(minter.address, '0x02', 100)
+        blueTileContract.mintId(minter.address, '0x02', 100)
       ).to.be.revertedWith('BlueTileProject: must have minter role to mint');
     });
   });
