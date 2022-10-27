@@ -1,0 +1,149 @@
+{
+  "name": "bluetileproject",
+  "version": "1.0.0",
+  "description": "Blue Tile Project Smart Contracts",
+  "main": "./lib/index.js",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "clean": "rm -rf ./lib/",
+    "cm": "cz",
+    "lint": "eslint ./src/ --fix",
+    "prepare": "husky install",
+    "semantic-release": "semantic-release",
+    "test:watch": "jest --watch",
+    "test": "jest --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fleatomarket/bluetileproject.git"
+  },
+  "author": {
+    "name": "Mano Samy",
+    "email": "mano.samy@fleato.com",
+    "url": "https://github.com/manosamy"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0"
+  },
+  "keywords": [
+    "blue tile project",
+    "nft",
+    "houston",
+    "texas"
+  ],
+  "bugs": {
+    "url": "https://github.com/fleatomarket/bluetileproject/issues"
+  },
+  "homepage": "https://github.com/fleatomarket/bluetileproject#readme",
+  "private": false,
+  "devDependencies": {
+    "@ethersproject/abi": "^5.4.7",
+    "@ethersproject/providers": "^5.4.7",
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-etherscan": "^3.0.0",
+    "@ryansonshine/commitizen": "^4.2.8",
+    "@ryansonshine/cz-conventional-changelog": "^3.3.4",
+    "@semantic-release/git": "^10.0.1",
+    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/hardhat": "^6.1.2",
+    "@types/chai": "^4.2.0",
+    "@types/jest": "^29.2.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": ">=12.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "chai": "^4.2.0",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "copyfiles": "^2.4.1",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "ethers": "^5.4.7",
+    "hardhat": "^2.12.0",
+    "hardhat-gas-reporter": "^1.0.8",
+    "husky": "^6.0.0",
+    "jest": "^27.2.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "semantic-release": "^19.0.2",
+    "solidity-coverage": "^0.8.0",
+    "ts-jest": "^27.0.5",
+    "ts-node": ">=8.0.0",
+    "typechain": "^8.1.0",
+    "typescript": ">=4.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/@ryansonshine/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --cache-location .eslintcache --fix"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "type": "build",
+              "scope": "deps",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "build",
+                "section": "Dependencies and Other Build Updates",
+                "hidden": false
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
+}
