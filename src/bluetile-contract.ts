@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { BlueTile__factory } from '../typechain-types';
 import { BlueTile } from '../typechain-types/contracts/BlueTile';
-import { tilesToNFT } from './bluetile-mapper';
+import { tilesToNFT, titleToData } from './bluetile-mapper';
 
 // import BlueTileContractJson from "../artifacts/contracts/BlueTile.sol/BlueTile.json";
 
@@ -28,27 +28,41 @@ export class BlueTileContract {
     return await this.contract.exists(id);
   }
 
-  async mint(to: string, tiles: number[], quantity: number): Promise<string> {
+  async mint(
+    to: string,
+    tiles: number[],
+    title: string,
+    quantity: number
+  ): Promise<string> {
     const id = tilesToNFT(tiles);
-    await this.mintId(to, id, quantity);
+    const titleData = titleToData(title);
+    await this.mintId(to, id, titleData, quantity);
     return id;
   }
 
   async mintId(
     to: string,
     id: string,
+    data: string,
     quantity: number
   ): Promise<ethers.ContractTransaction> {
-    return await this.contract.mint(to, id, quantity, '0x00');
+    return await this.contract.mint(to, id, quantity, data);
   }
 
   async transfer(
     from: string,
     to: string,
     id: string,
+    dataString: string,
     quantity: number
   ): Promise<ethers.ContractTransaction> {
-    return await this.contract.safeTransferFrom(from, to, id, quantity, '0x00');
+    return await this.contract.safeTransferFrom(
+      from,
+      to,
+      id,
+      quantity,
+      ethers.utils.id(dataString)
+    );
   }
 
   async approveAll(

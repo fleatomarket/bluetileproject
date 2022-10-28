@@ -13,5 +13,5 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "scripts/**/*.ts", "typechain-types/**/*.ts", "hardhat.config.ts", "test/**/*.ts"]
+  "include": ["src/**/*.ts", "typechain-types/**/*.ts"]
 }

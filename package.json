@@ -2,7 +2,7 @@
   "name": "bluetileproject",
   "version": "1.0.0",
   "description": "Blue Tile Project Smart Contracts",
-  "main": "./lib/index.js",
+  "main": "./lib/src/index.js",
   "files": [
     "lib/**/*"
   ],

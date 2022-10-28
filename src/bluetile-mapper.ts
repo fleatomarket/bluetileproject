@@ -5,3 +5,5 @@ export const tilesToNFT = (tiles: number[]): string => {
   const hash = ethers.utils.keccak256(dataHexString);
   return hash;
 };
+
+export const titleToData = (title: string): string => ethers.utils.id(title);
